@@ -193,7 +193,9 @@ slides > slide {
   &.title-slide {
     &:after {
       content: '';
+      /*
       background: url(../../images/io2012_logo.png) no-repeat 100% 50%;
+      */
       @include background-size(contain);
       position: absolute;
       bottom: $slide-top-bottom-padding;
@@ -503,6 +505,10 @@ button:not(:disabled):active {
 
 .columns-2 {
   @include column-count(2);
+}
+
+.columns-3 {
+  @include column-count(3);
 }
 
 table {
