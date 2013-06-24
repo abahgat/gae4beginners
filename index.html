@@ -211,8 +211,7 @@ threadsafe: yes
 
 <b>libraries:</b>
 - name: webapp2
-  version: "2.5.2"
-</pre>
+  version: "2.5.2"</pre>
     </article>
   </slide>
 
@@ -222,8 +221,7 @@ threadsafe: yes
     </hgroup>
     <article>
       <p>App Engine supports <a href="http://webapp-improved.appspot.com/">webapp2</a> by default:</p>
-<pre class="prettyprint" data-lang="python">
-import webapp2
+<pre class="prettyprint" data-lang="python">import webapp2
 
 class MainHandler(<b>webapp2.RequestHandler</b>):
     <b>def get(self):</b>
@@ -231,9 +229,17 @@ class MainHandler(<b>webapp2.RequestHandler</b>):
 
 app = webapp2.WSGIApplication([
     <b>('/', MainHandler)</b>
-], debug=True)
-</pre>
+], debug=True)</pre>
       <p>In addition to webapp2, the environment includes <a href="http://webob.org/">WebOb</a> and <a href="https://developers.google.com/appengine/docs/python/tools/libraries27#django">Django</a>.</p>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Datastore(s)</h2>
+    </hgroup>
+    <article>
+      <p>There are two datastore types</p>
     </article>
   </slide>
 
@@ -242,6 +248,14 @@ app = webapp2.WSGIApplication([
       <h2>Datastore</h2>
     </hgroup>
     <article>
+      <p>Creating an entity type is as easy as creating a Python class.</p>
+<pre class="prettyprint" data-lang="python">from google.appengine.ext import ndb
+
+class Contact(<b>ndb.Model</b>):
+  name = <b>ndb.StringProperty()</b>
+  email = name = ndb.StringProperty()
+  birth_date = <b>ndb.DateProperty()</b>
+<pre>
     </article>
   </slide>
 
