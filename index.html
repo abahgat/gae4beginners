@@ -236,6 +236,30 @@ app = webapp2.WSGIApplication([
 
   <slide>
     <hgroup>
+      <h2>View templates</h2>
+    </hgroup>
+    <article>
+      <p>If you use webapp2, <a href="http://webapp-improved.appspot.com/tutorials/gettingstarted/templates.html#using-django-templates">Django templates</a> are supported the default.</p>
+      <pre class="prettyprint" data-lang="html">&lt;html&gt;
+  &lt;body&gt;
+    <b>{% for greeting in greetings %}</b>
+      <b>{% if greeting.author %}</b>
+        &lt;b&gt;<b>{{ greeting.author.nickname }}</b>&lt;/b&gt; wrote:
+      <b>{% else %}</b>
+        An anonymous person wrote:
+      <b>{% endif %}</b>
+      &lt;blockquote&gt;<b>{{ greeting.content|escape }}</b>&lt;/blockquote&gt;
+    <b>{% endfor %}</b>
+
+    &lt;a href="<b>{{ url }}</b>"&gt;<b>{{ url_linktext }}</b>&lt;/a&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+      <p>Alternatively, App Engine ships with <a href="http://jinja.pocoo.org/docs/">jinja2</a>, too.</p>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
       <h2>Datastore(s)</h2>
     </hgroup>
     <article>
