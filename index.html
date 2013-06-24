@@ -295,7 +295,14 @@ app = webapp2.WSGIApplication([
       <h2>Datastore(s)</h2>
     </hgroup>
     <article>
-      <p>There are two datastore types</p>
+      <ul>
+        <li>There are two implementations of datastore</li>
+        <li>The original one is implemented in <code>google.appengine.ext.db</code></li>
+        <li>The new one is called <a href="https://developers.google.com/appengine/docs/python/ndb/">NDB</a> and it is implemented in <code>google.appengine.ext.ndb</code></li>
+        <li>They are very similar but not identical</li>
+        <li>We will cover <b>NDB</b></li>
+      </ul>
+        
     </article>
   </slide>
 
@@ -316,9 +323,53 @@ class Contact(<b>ndb.Model</b>):
 
   <slide>
     <hgroup>
-      <h2>memcache</h2>
+      <h2>Querying the Datastore</h2>
     </hgroup>
     <article>
+      <p>The Datastore API is Object Oriented.</p>
+<pre class="prettyprint" data-lang="python">from google.appengine.ext import ndb
+
+def StoresByCity(city, limit):
+  query = <b>Store.query(Store.city == city).order(Store.name)</b>
+  return <b>query.fetch(limit, projection=[Store.name, Store.address])</b></pre>
+    </article>
+    <ul>
+      <li>Queries are objects</li>
+      <li>Filters and projections are specified by calling methods</li>
+      <li>Make sure you know the limits! (Read the <a href="https://developers.google.com/appengine/docs/python/ndb/queries">docs</a>)</li>
+    </ul>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Querying the Datastore with GQL</h2>
+    </hgroup>
+    <article>
+      <p>You can write queries with GQL, a SQL-like language.</p>
+<pre class="prettyprint" data-lang="python">from google.appengine.ext import ndb
+
+qry = ndb.gql(<b>"SELECT * FROM Account WHERE balance < :1"</b>, 100)</pre>
+      <p>GQL is translated to NDB's native query API. <span class="red3">(This is the opposite of what traditional ORM libraries do!)</span></p>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Memcache</h2>
+    </hgroup>
+    <article>
+      <p>Memcache is a high-performance, distributed memory object caching system.</p>
+      <pre class="prettyprint" data-lang="python">from google.appengine.api import memcache
+
+def get_data():
+  data = <b>memcache.get('key')</b>
+  if data is not None:
+    return data
+  else:
+    data = self.query_for_data()
+    <b>memcache.add('key', data, 60)</b>
+    return data</pre>
+      <p>Can be used to minimize hits to the Datastore or to save transient state information.</p>
     </article>
   </slide>
 
