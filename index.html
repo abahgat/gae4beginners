@@ -224,8 +224,9 @@ threadsafe: yes
 <pre class="prettyprint" data-lang="python">import webapp2
 
 class MainHandler(<b>webapp2.RequestHandler</b>):
-    <b>def get(self):</b>
-        <b>self.response.write</b>('Hello world!')
+  <b>def get(self):</b>
+    name = <b>self.request.get('name')</b>
+    <b>self.response.write</b>('Hello %s!' % name)
 
 app = webapp2.WSGIApplication([
     <b>('/', MainHandler)</b>
