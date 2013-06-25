@@ -89,23 +89,6 @@ URL: https://code.google.com/p/io-2012-slides
     </article>
   </slide>
 
-  <slide hidden>
-    <hgroup>
-      <h2>Shopping list of features</h2>
-    </hgroup>
-    <article>
-      <ul>
-        <li>dynamic web serving, with full support for common web technologies</li>
-        <li>persistent storage with queries, sorting and transactions</li>
-        <li>automatic scaling and load balancing</li>
-        <li>APIs for authenticating users and sending email using Google Accounts</li>
-        <li>a fully featured local development environment that simulates Google App Engine on your computer</li>
-        <li>task queues for performing work outside of the scope of a web request</li>
-        <li>scheduled tasks for triggering events at specified times and regular intervals</li>
-      </ul>
-    </article>
-  </slide>
-
   <slide class="fill nobackground" style="background-image: url(images/visuals/sandbox.png)">
     <hgroup>
       <h2 class="white">Your code runs in a sandbox</h2>
@@ -139,7 +122,24 @@ URL: https://code.google.com/p/io-2012-slides
         <li><b>inbound connections</b>: only HTTP(s) on ports 80/443.</li>
         <li><b>filesystem access</b>: writing files is not allowed. An application can read only files uploaded with the application code.</li>
         <li><b>no native code</b>: libraries that depend on native code are generally not available.</li>
-        <li><b>time limits</b>: app code must terminate within given time limits. <span class="yellow">detail</span></li>
+        <li><b>time limits</b>: app code must terminate within given time limits. (60s for web requests, 10m for tasks but unlimited time for backend jobs)</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide hidden>
+    <hgroup>
+      <h2>Shopping list of features</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>dynamic web serving, with full support for common web technologies</li>
+        <li>persistent storage with queries, sorting and transactions</li>
+        <li>automatic scaling and load balancing</li>
+        <li>APIs for authenticating users and sending email using Google Accounts</li>
+        <li>a fully featured local development environment that simulates Google App Engine on your computer</li>
+        <li>task queues for performing work outside of the scope of a web request</li>
+        <li>scheduled tasks for triggering events at specified times and regular intervals</li>
       </ul>
     </article>
   </slide>
@@ -166,12 +166,18 @@ URL: https://code.google.com/p/io-2012-slides
     </article>
   </slide>
 
-  <slide>
+  <slide class="fill nobackground" style="background-image: url(images/visuals/bill.jpg)">
     <hgroup>
-      <h2>Pricing</h2>
+      <h2 class="white">No fixed costs: pay only for what you use...</h2>
     </hgroup>
-    <article>
-    </article>
+    <footer class="source white">http://www.flickr.com/photos/jasonalley/5039425430</footer>
+  </slide>
+
+  <slide class="fill nobackground" style="background-image: url(images/visuals/free.jpg)">
+    <hgroup>
+      <h2 class="white">...with generous free quotas</h2>
+    </hgroup>
+    <footer class="source white">http://www.flickr.com/photos/toddle_email_newsletters/7002322316</footer>
   </slide>
 
   <slide class="segue dark nobackground">
@@ -622,16 +628,29 @@ def bar(self, request):
     </article>
   </slide>
 
-    <slide class="segue dark nobackground">
+  <slide class="segue dark nobackground">
     <aside class="gdbar"><img src="images/appsterdamlogo128.png"></aside>
     <hgroup class="auto-fadein">
-      <h3>App Engine is more than cheap hosting</h3>
+      <h2>There's more</h2>
     </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>A few more advanced APIs</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li><b><a href="https://developers.google.com/appengine/docs/python/xmpp/">XMPP</a></b> &ndash; Integrate your app with Google Talk and Instant Message Clients.</li>
+        <li><b><a href="https://developers.google.com/appengine/docs/python/search/">Search</a> <span class="red">(experimental)</span></b> &ndash; Build indexes for fast search over sets of document (which can be any object your app manipulates. Supports full text search and distance-based geographical search out of the box.</li>
+        <li><b><a href="https://developers.google.com/appengine/docs/python/prospectivesearch/">Prospective Search</a> <span class="red">(experimental)</span></b> &ndash; Analyze a real-time feed of documents and be notified when anything matches one of your searches.</li>
+      </ul>
+    </article>
   </slide>
 
   <slide class="fill nobackground" style="background-image: url(images/visuals/shuttle.jpg)">
     <hgroup>
-      <h2 class="white">A platform that can take your app to the next level</h2>
+      <h2 class="white">Take your app to the next level</h2>
     </hgroup>
     <footer class="source gray">http://www.flickr.com/photos/msimdottv/4339697089</footer>
   </slide>
@@ -640,8 +659,21 @@ def bar(self, request):
     <aside class="gdbar"><img src="images/appsterdamlogo128.png"></aside>
     <hgroup class="auto-fadein">
       <h2>Time for a Challenge</h2>
-      <h3>Build a geo-thing</h3>
+      <h3>Using the Search API to build a map-based application</h3>
     </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Advanced Search</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Using the Search API, build a location aware system.</li>
+        <li>Search for all the points that are closer than 10km from my position.</li>
+        <li>Run a full text search on the items descriptions.</li>
+      </ul>
+    </article>
   </slide>
 
   <slide class="thank-you-slide segue nobackground">
