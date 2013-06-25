@@ -1,9 +1,10 @@
 # Google App Engine for Beginners
+
+![Appsterdam logo](images/appsterdamlogo.png)
+
 ## Appsterdam Guru Session, June 25th 2013
 
 This is a slide deck for a Guru Session on Google App Engine to be held in Amsterdam.
-
-![Appsterdam logo](images/appsterdamlogo.png)
 
 The following content describes how to work with the slide template, [courtesy of Google](https://code.google.com/p/io-2013-slides/).
 
