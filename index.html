@@ -113,12 +113,12 @@ URL: https://code.google.com/p/io-2012-slides
     <footer class="source white">http://www.flickr.com/photos/damongman/5623130732/</footer>
   </slide>
 
-  <slide hidden>
+  <slide>
     <hgroup>
       <h2>The Sandbox</h2>
     </hgroup>
     <article>
-      <p>Applications run in a secure environment, called <b>sandbox</b>, that provides limited access to the underlying operating system.</p>
+      <p>Secure environment that provides limited access to the underlying operating system.</p>
       <p>The sandbox allows App Engine to</p>
       <ul>
         <li>distribute web requests across multiple servers</li>
@@ -134,12 +134,12 @@ URL: https://code.google.com/p/io-2012-slides
       <h2>Sandbox limitations</h2>
     </hgroup>
     <article>
-      <ul class="build">
+      <ul>
         <li><b>outbound connections</b>: only through the provided URL fetch and email services or the experimental <a href="https://developers.google.com/appengine/docs/python/sockets/">Socket API</a>.</li>
         <li><b>inbound connections</b>: only HTTP(s) on ports 80/443.</li>
         <li><b>filesystem access</b>: writing files is not allowed. An application can read only files uploaded with the application code.</li>
         <li><b>no native code</b>: libraries that depend on native code are generally not available.</li>
-        <li><b>time limits</b>: app code must terminate within certain time limits. <span class="yellow">detail</span></li>
+        <li><b>time limits</b>: app code must terminate within given time limits. <span class="yellow">detail</span></li>
       </ul>
     </article>
   </slide>
@@ -335,7 +335,7 @@ class Contact(<b>ndb.Model</b>):
 <pre class="prettyprint" data-lang="python">from google.appengine.ext import ndb
 
 def StoresByCity(city, limit):
-  query = <b>Store.query(Store.city == city).order(Store.name)</b>
+  <b>query = Store.query(Store.city == city).order(Store.name)</b>
   return <b>query.fetch(limit, projection=[Store.name, Store.address])</b></pre>
     </article>
     <ul>
@@ -409,11 +409,118 @@ def get_data():
     </article>
   </slide>
 
+  <slide class="nobackground">
+    <hgroup>
+      <h2>Implement a backend for the page below</h2>
+    </hgroup>
+    <article>
+      <div class="vcenter center">
+        <img src="images/screenshots/channel-demo.png" alt="Channel Demo Screenshot">
+      </div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Your mission</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Use the channel API to show the cursor position of every visitor's mouse.</li>
+        <li>Update the cursor position whenever users move their mouse.</li>
+        <li>Remove cursor icons when visitors leave the page.</li>
+        <li>Complete the code in the <code>channel</code> directory of the package you downloaded earlier and implement the missing methods.</li>
+        <li>Point your browser to <code>http://localhost:$APP_PORT/channel</code> to test your server.</li>
+    </article>
+  </slide>
+
   <slide>
     <hgroup>
       <h2>Channel API</h2>
     </hgroup>
     <article>
+      <p>A channel connects two ends:</p>
+      <ul>
+        <li>A <b>client</b>, which
+          <ul>
+            <li>connects to a channel,</li>
+            <li>listen for updates,</li>
+            <li>sends messages to the server.</li>
+          </ul>
+        </li>
+        <li>A <b>server</b>, which
+          <ul>
+            <li>maintains global state,</li>
+            <li>notifies clients of state changes.</li>
+          </ul>
+        </li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Creating a Channel</h2>
+    </hgroup>
+    <article>
+      <p>Requires action on both ends. The server sends a token to the client:</p>
+
+      <pre class="prettyprint" data-lang="python">def get(self):
+  client_id = uuid.uuid4().hex
+  token = <b>channel.create_channel(client_id)</b>
+  template_values = {'client': client_id, 'token': token}
+  self._render_template(template_values)</pre>
+      <p>The client uses the token to create a channel</p>
+      <pre class="prettyprint" data-lang="javascript">var client = "{{ client }}";
+<b>var channel = new goog.appengine.Channel('{{ token }}')</b>;
+function setUpChannel() {
+  <b>var socket = channel.open()</b>;
+  <b>socket.onmessage = onMessage</b>;
+}</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Using the Channel</h2>
+    </hgroup>
+    <article>
+      <p>The client can <b>only read</b> messages from the client.</p>
+
+      <pre class="prettyprint" data-lang="javascript">function onMessage(message) {
+  data = $.parseJSON(message.data);
+  /* do something with data */
+}</pre>
+      <p>It can send data to the server via HTTP requests:</p>
+      <pre class="prettyprint" data-lang="javascript">function sendCoordinates() {
+  <bb>$.post('/channel', {
+    x: current_x,
+    y: current_y,
+    client: client
+  });</b>
+}</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>The role of the Server</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>The server needs to keep track of the connected clients,</li>
+        <li>you can keep that information in memcache but</li>
+        <li>it is necessary to be notified of connections and disconnections.</li>
+      </ul>
+
+      <p>There is a service for that! Enable presence in your <code>app.yaml</code></p>
+      <pre class="prettyprint" data-lang="yaml">inbound_services:
+- channel_presence</pre>
+      <p>and implement two handlers that can respond to <code>POST</code> at</p>
+      <ul>
+        <li><code class="green">/_ah/channel/connected/</code></li>
+        <li><code class="green">/_ah/channel/disconnected/</code></li>
+      </ul>
     </article>
   </slide>
 
@@ -434,6 +541,17 @@ def get_data():
       <div class="vcenter center">
         <img src="images/screenshots/endpoints-demo.png" alt="Cloud Endpoints Demo Screenshot">
       </div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Your mission</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Complete the code in the <code>endpoints</code> directory of the package you downloaded earlier and implement the missing methods.</li>
+        <li>Point your browser to <code>http://localhost:$APP_PORT/endpoints</code> to test your server.</li>
     </article>
   </slide>
 
@@ -502,6 +620,20 @@ def bar(self, request):
         <li>If you want to build a REST API, check out <a href="http://endpoints-proto-datastore.appspot.com/">Endpoints Proto Datastore</a>.</li>
       </ul>
     </article>
+  </slide>
+
+    <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/appsterdamlogo128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h3>App Engine is more than cheap hosting</h3>
+    </hgroup>
+  </slide>
+
+  <slide class="fill nobackground" style="background-image: url(images/visuals/shuttle.jpg)">
+    <hgroup>
+      <h2 class="white">A platform that can take your app to the next level</h2>
+    </hgroup>
+    <footer class="source gray">http://www.flickr.com/photos/msimdottv/4339697089</footer>
   </slide>
 
   <slide class="segue dark nobackground">
