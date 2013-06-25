@@ -456,10 +456,32 @@ def get_data():
         </li>
         <li>A <b>server</b>, which
           <ul>
-            <li>maintains global state,</li>
+            <li>maintains a registry of open channels,</li>
             <li>notifies clients of state changes.</li>
           </ul>
         </li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>The role of the Server</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>The server needs to keep track of the connected clients,</li>
+        <li>you can keep that information in memcache but</li>
+        <li>for this example, it is necessary to be notified of connections and disconnections.</li>
+      </ul>
+
+      <p>There is a service for that! Enable presence in your <code>app.yaml</code></p>
+      <pre class="prettyprint" data-lang="yaml">inbound_services:
+- channel_presence</pre>
+      <p>and implement two handlers that can respond to <code>POST</code> at</p>
+      <ul>
+        <li><code class="green">/_ah/channel/connected/</code></li>
+        <li><code class="green">/_ah/channel/disconnected/</code></li>
       </ul>
     </article>
   </slide>
@@ -505,28 +527,6 @@ function setUpChannel() {
     client: client
   });</b>
 }</pre>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2>The role of the Server</h2>
-    </hgroup>
-    <article>
-      <ul>
-        <li>The server needs to keep track of the connected clients,</li>
-        <li>you can keep that information in memcache but</li>
-        <li>it is necessary to be notified of connections and disconnections.</li>
-      </ul>
-
-      <p>There is a service for that! Enable presence in your <code>app.yaml</code></p>
-      <pre class="prettyprint" data-lang="yaml">inbound_services:
-- channel_presence</pre>
-      <p>and implement two handlers that can respond to <code>POST</code> at</p>
-      <ul>
-        <li><code class="green">/_ah/channel/connected/</code></li>
-        <li><code class="green">/_ah/channel/disconnected/</code></li>
-      </ul>
     </article>
   </slide>
 
@@ -623,7 +623,8 @@ def bar(self, request):
         <li>You can also use the APIs Explorer to experiment with your API by visiting <code class="green">https://your_app_id.appspot.com/_ah/api/explorer</code></li>
         <li>You can use the SDK to generate JavaScript, Android and iOS clients for your service,</li>
         <li>Endpoints can authenticate clients using <a href="https://developers.google.com/appengine/docs/python/endpoints/auth">OAuth 2.0</a>,</li>
-        <li>If you want to build a REST API, check out <a href="http://endpoints-proto-datastore.appspot.com/">Endpoints Proto Datastore</a>.</li>
+        <li>If you want to build a REST API, check out <a href="http://endpoints-proto-datastore.appspot.com/">Endpoints Proto Datastore</a>,</li>
+        <li>and if you work with Android applications, check out the <a href="https://developers.google.com/cloud/samples/mbs/">Mobile Backend Starter</a>.</li>
       </ul>
     </article>
   </slide>
