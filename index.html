@@ -63,12 +63,12 @@ URL: https://code.google.com/p/io-2012-slides
     <hgroup>
       <h2>Four runtime environments</h2>
     </hgroup>
-    <article>
+    <article class="languages">
       <div class="columns-2">
-        <div class="centered"><p>Python</p></div>
-        <div class="centered"><p>Java</p></div>
-        <div class="centered"><p>Go</p></div>
-        <div class="centered"><p>PHP</p></div>
+        <div class="centered"><img src="images/languages/python.png"><br><p>Python</p></div>
+        <div class="centered"><img src="images/languages/java.png"><br><p>Java</p></div>
+        <div class="centered"><img src="images/languages/go.png"><br><p>Go</p></div>
+        <div class="centered"><img src="images/languages/php.png"><br><p>PHP</p></div>
       </div>
     </article>  
   </slide>
@@ -106,7 +106,14 @@ URL: https://code.google.com/p/io-2012-slides
     </article>
   </slide>
 
-  <slide>
+  <slide class="fill nobackground" style="background-image: url(images/visuals/sandbox.png)">
+    <hgroup>
+      <h2 class="white">Your code runs in a sandbox</h2>
+    </hgroup>
+    <footer class="source white">http://www.flickr.com/photos/damongman/5623130732/</footer>
+  </slide>
+
+  <slide hidden>
     <hgroup>
       <h2>The Sandbox</h2>
     </hgroup>
@@ -167,7 +174,6 @@ URL: https://code.google.com/p/io-2012-slides
     </article>
   </slide>
 
-
   <slide class="segue dark nobackground">
     <aside class="gdbar"><img src="images/appsterdamlogo128.png"></aside>
     <hgroup class="auto-fadein">
@@ -208,12 +214,11 @@ URL: https://code.google.com/p/io-2012-slides
     </article>
   </slide>
 
-  <slide>
+  <slide class="fill nobackground" style="background-image: url(images/visuals/run.jpg)">
     <hgroup>
       <h2>Run!</h2>
     </hgroup>
-    <article>
-    </article>
+    <footer class="source black">http://www.flickr.com/photos/nihonbunka/46324600</footer>
   </slide>
 
   <slide class="segue dark nobackground">
@@ -376,8 +381,134 @@ def get_data():
   <slide class="segue dark nobackground">
     <aside class="gdbar"><img src="images/appsterdamlogo128.png"></aside>
     <hgroup class="auto-fadein">
-      <h2>Advanced demos</h2>
-      <h3>...</h3>
+      <h2>Hands-on exercises</h2>
+      <h3>You will have to do some work now ;)</h3>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Preparation</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Download the boilerplate code from <a href="">here</a></li>
+        <li>Uncompress it</li>
+        <li>Open it up in a text editor/IDE you are familiar with</li>
+        <li>Take some time to familiarize with it</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide class="segue red nobackground">
+    <hgroup>
+      <h2>Exercise 1</h2>
+      <h3>(Quasi) Real Time Communication</h3>
+    </hgroup>
+    <article>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Channel API</h2>
+    </hgroup>
+    <article>
+    </article>
+  </slide>
+
+  <slide class="segue red nobackground">
+    <hgroup>
+      <h2>Exercise 2</h2>
+      <h3>Building an API Backend</h3>
+    </hgroup>
+    <article>
+    </article>
+  </slide>
+
+  <slide class="nobackground">
+    <hgroup>
+      <h2>Implement a backend for the page below</h2>
+    </hgroup>
+    <article>
+      <div class="vcenter center">
+        <img src="images/screenshots/endpoints-demo.png" alt="Cloud Endpoints Demo Screenshot">
+      </div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Google Cloud Endpoints <span class="red">(experimental)</span></h2>
+    </hgroup>
+    <article>
+      <p><a href="https://developers.google.com/appengine/docs/python/endpoints/">Google Cloud Endpoints</a> consists of tools, libraries and capabilities that allow you to generate APIs and client libraries from an App Engine application.</p>
+      <div class="vcenter">
+        <img src="images/visuals/endpoints.png" alt="Google Cloud Endpoints diagram">
+      </div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Create a service</h2>
+    </hgroup>
+    <article>
+      <p>Annotate the API implementation class with the <a href="https://developers.google.com/appengine/docs/python/endpoints/create_api">endpoints decorators</a>,</p>
+      <pre class="prettyprint" data-lang="python"><b>@endpoints.api(name='myapi', version='v1', description='My New API')</b>
+class MyNewApi(<b>remote.Service</b>):
+  ...</pre>
+      <p>create an API server instance,</p>
+      <pre class="prettyprint" data-lang="python">application = <b>endpoints.api_server([MyNewApi], restricted=False)</b></pre>
+      <p>and map the instance to the API URL</p>
+      <pre class="prettyprint" data-lang="yaml">handlers:
+# Endpoints handler
+- url: <b>/_ah/spi/.*</b>
+  script: <b>services.application</b></pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Define the API methods</h2>
+    </hgroup>
+    <article>
+      <p>Annotate methods with </p>
+      <pre class="prettyprint" data-lang="python"><b>@endpoints.method(RequestMessageClass,
+                  ResponseMessageClass,
+                  name='foo.bar',
+                  path='/bar',
+                  http_method='GET', ...)</b>
+def bar(self, request):
+  ...</pre>
+      <ul>
+        <li><code>RequestMessageClass</code> and <code>ResponseMessageClass</code> are <a href="https://developers.google.com/appengine/docs/python/tools/protorpc/">ProtoRPC</a> definitions of the request and response classes,</li>
+        <li><code>path</code> is the URL path of the endpoint,</li>
+        <li><code>http_method</code> allows to map different functions to different HTTP methods</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Some closing notes on Endpoints</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Apps that use Cloud Endpoints expose discovery services at <code class="green">https://your_app_id.appspot.com/_ah/api/discovery/v1/apis</code></li>
+        <li>You can also use the APIs Explorer to experiment with your API by visiting <code class="green">https://your_app_id.appspot.com/_ah/api/explorer</code></li>
+        <li>You can use the SDK to generate JavaScript, Android and iOS clients for your service,</li>
+        <li>Endpoints can authenticate clients using <a href="https://developers.google.com/appengine/docs/python/endpoints/auth">OAuth 2.0</a>,</li>
+        <li>If you want to build a REST API, check out <a href="http://endpoints-proto-datastore.appspot.com/">Endpoints Proto Datastore</a>.</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/appsterdamlogo128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Time for a Challenge</h2>
+      <h3>Build a geo-thing</h3>
     </hgroup>
   </slide>
 
