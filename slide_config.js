@@ -20,7 +20,7 @@ var SLIDE_CONFIG = {
   // Author information
   presenters: [{
     name: 'Alessandro Bahgat',
-    //company: 'Technical Solutions Engineer, Google',
+    company: '@abahgat', // it just renders in the right place ;)
     gplus: 'http://plus.google.com/107973517098181615920',
     twitter: '@abahgat',
     www: 'http://www.abahgat.com',
