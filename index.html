@@ -329,6 +329,19 @@ def StoresByCity(city, limit):
 
   <slide>
     <hgroup>
+      <h2>Querying the Datastore with GQL</h2>
+    </hgroup>
+    <article>
+      <p>You can write queries with GQL, a SQL-like language.</p>
+<pre class="prettyprint" data-lang="python">from google.appengine.ext import ndb
+
+qry = ndb.gql(<b>"SELECT * FROM Account WHERE balance < :1"</b>, 100)</pre>
+      <p>GQL is translated to NDB's native query API. <span class="red3">(This is the opposite of what traditional ORM libraries do!)</span></p>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
       <h2>View templates</h2>
     </hgroup>
     <article>
@@ -362,19 +375,6 @@ def StoresByCity(city, limit):
     params = {}
   path = os.path.join(os.path.dirname(__file__), 'views', view_filename)
   self.response.out.write(<b>template.render(path, params)</b>)</pre>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2>Querying the Datastore with GQL</h2>
-    </hgroup>
-    <article>
-      <p>You can write queries with GQL, a SQL-like language.</p>
-<pre class="prettyprint" data-lang="python">from google.appengine.ext import ndb
-
-qry = ndb.gql(<b>"SELECT * FROM Account WHERE balance < :1"</b>, 100)</pre>
-      <p>GQL is translated to NDB's native query API. <span class="red3">(This is the opposite of what traditional ORM libraries do!)</span></p>
     </article>
   </slide>
 
